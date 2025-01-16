@@ -1,4 +1,6 @@
-import React, { memo } from "react";
+"use client";
+
+import React, { memo, useEffect } from "react";
 import equal from "fast-deep-equal";
 
 import { PreviewMessage, ThinkingMessage } from "./message";
@@ -16,11 +18,14 @@ function PureMessages({
   isBlockVisible,
 }) {
   const [messagesContainerRef, messagesEndRef] = useScrollToBottom();
+  useEffect(() => {
+    console.log("Messages updated:", messages);
+  }, [messages]);
 
   return (
     <div
       ref={messagesContainerRef}
-      className="flex w-full min-w-0 flex-1 flex-col gap-6 overflow-y-scroll border-2 border-yellow-300 pt-4"
+      className="flex w-full min-w-0 flex-1 flex-col gap-6 overflow-y-scroll pt-4"
     >
       {/* If you'd like to show an overview when there are no messages: */}
       {messages.length === 0 && <Overview />}
@@ -56,7 +61,7 @@ function PureMessages({
 
 export const Messages = memo(PureMessages, (prevProps, nextProps) => {
   // If the block is already visible, skip further checks
-  if (prevProps.isBlockVisible && nextProps.isBlockVisible) return true;
+  //   if (prevProps.isBlockVisible && nextProps.isBlockVisible) return true;
 
   // Compare loading states, message list lengths, and deep equality of messages/votes
   if (prevProps.isLoading !== nextProps.isLoading) return false;

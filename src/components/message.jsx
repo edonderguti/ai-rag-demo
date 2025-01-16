@@ -28,7 +28,7 @@ const PurePreviewMessage = (props) => {
       >
         <div
           className={cx(
-            "flex w-full gap-4 border-2 border-green-400 group-data-[role=user]/message:ml-auto group-data-[role=user]/message:max-w-2xl",
+            "flex w-full gap-4 group-data-[role=user]/message:ml-auto group-data-[role=user]/message:max-w-2xl",
             {
               "w-full": mode === "edit",
               "group-data-[role=user]/message:w-fit": mode !== "edit",
