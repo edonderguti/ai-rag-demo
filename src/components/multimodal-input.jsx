@@ -81,7 +81,7 @@ const MultimodalInput = ({
   };
 
   const submitForm = useCallback(() => {
-    window.history.replaceState({}, "", `/chat/${chatId}`);
+    window.history.replaceState({}, "", ``);
 
     handleSubmit(undefined, {
       experimental_attachments: attachments,
