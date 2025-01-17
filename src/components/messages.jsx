@@ -19,7 +19,7 @@ function PureMessages({
 }) {
   const [messagesContainerRef, messagesEndRef] = useScrollToBottom();
   useEffect(() => {
-    console.log("Messages updated:", messages);
+    // console.log("Messages updated:", messages);
   }, [messages]);
 
   return (

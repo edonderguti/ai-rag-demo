@@ -1182,9 +1182,6 @@ video {
 .border {
   border-width: 1px;
 }
-.border-2 {
-  border-width: 2px;
-}
 .border-b {
   border-bottom-width: 1px;
 }
@@ -1197,19 +1194,11 @@ video {
 .border-t {
   border-top-width: 1px;
 }
-.border-green-400 {
-  --tw-border-opacity: 1;
-  border-color: rgb(74 222 128 / var(--tw-border-opacity, 1));
-}
 .border-input {
   border-color: hsl(var(--input));
 }
 .border-sidebar-border {
   border-color: hsl(var(--sidebar-border));
-}
-.border-yellow-300 {
-  --tw-border-opacity: 1;
-  border-color: rgb(253 224 71 / var(--tw-border-opacity, 1));
 }
 .bg-background {
   background-color: hsl(var(--background));

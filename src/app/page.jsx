@@ -1,17 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import { useChat } from "ai/react";
+// import { useChat } from "ai/react";
+import { useCustomChat } from "@/hooks/useCustomChat";
 
 import { ChatHeader } from "@/components/chat-header";
 import { Messages } from "@/components/messages";
 import MultimodalInput from "@/components/multimodal-input";
 
 export default function ChatPage() {
-  // State for any file/image attachments
   const [attachments, setAttachments] = useState([]);
 
-  // Set up the chat using `useChat`
   const {
     messages,
     setMessages,
@@ -21,16 +20,13 @@ export default function ChatPage() {
     append,
     isLoading,
     stop,
-  } = useChat({
-    // A unique `id` for this chat instance
-    id: "unique-chat-id",
-    // An initial list of messages (if any)
-    initialMessages: [],
-    // You could also define fetch: mockFetch here if you like:
-    // fetch: mockFetch,
-    onError: (error) => {
-      console.log("Chat error:", error);
-    },
+  } = useCustomChat({
+    api: "/api/route",
+    onError: (err) => console.error("Chat error:", err),
+    onFinish: (msg) => console.log("Assistant finished:", msg),
+    initialMessages: [
+      { id: "sys-1", role: "system", content: "You are a helpful assistant." },
+    ],
   });
 
   // Optionally provide a reload function (stubbed here)
