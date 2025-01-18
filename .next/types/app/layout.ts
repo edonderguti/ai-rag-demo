@@ -1,4 +1,4 @@
-// File: C:\Users\edoon\Desktop\Programming\New folder\ai-rag-demo\src\app\layout.jsx
+// File: C:\Users\DD\OneDrive\Programming\ai-rag-frontend\ai-rag-demo\src\app\layout.jsx
 import * as entry from '../../../src/app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

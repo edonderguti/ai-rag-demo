@@ -19,8 +19,6 @@ export async function POST(request) {
     const userMessage =
       messages.length > 0 ? messages[messages.length - 1].content : "";
 
-    console.log("Message-**", userMessage);
-
     // 3. Call your API Gateway with { question: userMessage }
     const response = await fetch(
       "https://7a5ekawljh.execute-api.us-east-1.amazonaws.com/prod/ask",
@@ -35,8 +33,25 @@ export async function POST(request) {
 
     // 4. Return the Gateway's JSON response as the API response
     const data = await response.json();
-    return NextResponse.json(data);
+    console.log("Raw API Response:", data);
+
+    // Parse the nested body if it's a string
+    let parsedBody;
+    try {
+      parsedBody =
+        typeof data.body === "string" ? JSON.parse(data.body) : data.body;
+      console.log("Parsed body:", parsedBody);
+    } catch (parseError) {
+      console.error("Error parsing body:", parseError);
+      parsedBody = data.body;
+    }
+
+    // Return the retrieved_docs in a structured format
+    return NextResponse.json({
+      answer: parsedBody.retrieved_docs || "No answer available",
+    });
   } catch (error) {
+    console.error("Error in route handler:", error);
     return NextResponse.json(
       { error: "Something went wrong.", details: error.message },
       { status: 500 },

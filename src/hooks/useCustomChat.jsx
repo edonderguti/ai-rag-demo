@@ -69,12 +69,10 @@ export function useCustomChat({
       };
       // We'll capture the updated messages in a variable
       // so we can pass them to the server.
-      let updatedMessages;
-      setMessages((prev) => {
-        updatedMessages = [...prev, newMessage];
-        return updatedMessages;
-      });
-
+      // Update messages state
+      const updatedMessages = [...messages, newMessage];
+      setMessages(updatedMessages);
+      console.log("Updated Message -->", updatedMessages);
       // 2. If the user is the sender, call the backend
       if (role === "user") {
         controllerRef.current = new AbortController();
