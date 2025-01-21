@@ -5,10 +5,12 @@ import { toast } from "sonner";
 import useLocalStorage from "@/hooks/use-local-storage";
 import { useWindowSize } from "@/hooks/use-window-size";
 import { sanitizeUIMessages } from "@/lib/utils";
-import { ArrowUpIcon, PaperclipIcon, StopIcon } from "./icons";
+import { ArrowUpIcon, PaperclipIcon, StopIcon, FileIcon } from "./icons";
 import { PreviewAttachment } from "./preview-attachment";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
+import { Files } from "@/components/file";
+import { AnimatePresence } from "framer-motion";
 
 const suggestedActions = [
   {
@@ -41,22 +43,24 @@ const MultimodalInput = ({
   const fileInputRef = useRef(null);
   const { width } = useWindowSize();
   const [uploadQueue, setUploadQueue] = useState([]);
+  const [isFilesVisible, setIsFilesVisible] = useState(false);
+  const [selectedFilePathnames, setSelectedFilePathnames] = useState([]);
   const [localStorageInput, setLocalStorageInput] = useLocalStorage(
     "input",
     "",
   );
 
-  const adjustHeight = () => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight + 2}px`;
-    }
-  };
+  // const adjustHeight = () => {
+  //   if (textareaRef.current) {
+  //     textareaRef.current.style.height = "auto";
+  //     textareaRef.current.style.height = ${textareaRef.current.scrollHeight + 2}px;
+  //   }
+  // };
 
   // Initial height adjustment
   useEffect(() => {
     if (textareaRef.current) {
-      adjustHeight();
+      // adjustHeight();
     }
   }, []);
 
@@ -66,7 +70,7 @@ const MultimodalInput = ({
       const domValue = textareaRef.current.value;
       const finalValue = domValue || localStorageInput || "";
       setInput(finalValue);
-      adjustHeight();
+      // adjustHeight();
     }
   }, [localStorageInput, setInput]);
 
@@ -77,7 +81,7 @@ const MultimodalInput = ({
 
   const handleInput = (event) => {
     setInput(event.target.value);
-    adjustHeight();
+    // adjustHeight();
   };
 
   const submitForm = useCallback(() => {
@@ -173,7 +177,7 @@ const MultimodalInput = ({
                 <Button
                   variant="ghost"
                   onClick={async () => {
-                    window.history.replaceState({}, "", `/chat/${chatId}`);
+                    // window.history.replaceState({}, "", /chat/${chatId});
                     append({
                       role: "user",
                       content: suggestedAction.action,
@@ -191,14 +195,14 @@ const MultimodalInput = ({
           </div>
         )}
 
-      <input
+      {/* <input
         type="file"
         className="pointer-events-none fixed -left-4 -top-4 size-0.5 opacity-0"
         ref={fileInputRef}
         multiple
         onChange={handleFileChange}
         tabIndex={-1}
-      />
+      /> */}
 
       {(attachments.length > 0 || uploadQueue.length > 0) && (
         <div className="flex flex-row items-end gap-2 overflow-x-scroll">
@@ -268,7 +272,16 @@ const MultimodalInput = ({
         </Button>
       )}
 
-      <Button
+      <AnimatePresence>
+        {isFilesVisible && (
+          <Files
+            setIsFilesVisible={setIsFilesVisible}
+            selectedFilePathnames={selectedFilePathnames}
+            setSelectedFilePathnames={setSelectedFilePathnames}
+          />
+        )}
+      </AnimatePresence>
+      {/* <Button
         className="absolute bottom-2 right-11 m-0.5 h-fit rounded-full p-1.5 dark:border-zinc-700"
         onClick={(event) => {
           event.preventDefault();
@@ -278,7 +291,23 @@ const MultimodalInput = ({
         disabled={isLoading}
       >
         <PaperclipIcon size={14} />
-      </Button>
+      </Button> */}
+      <div
+        className="absolute bottom-2 right-11 m-0.5 h-fit cursor-pointer flex-row items-center justify-center rounded-full bg-zinc-100 p-1.5 text-sm hover:bg-zinc-200 dark:bg-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-800"
+        onClick={() => {
+          setIsFilesVisible(!isFilesVisible);
+        }}
+      >
+        <FileIcon size={20} />
+        <motion.div
+          className="absolute -right-2 -top-2 flex size-5 select-none flex-row items-center justify-center rounded-full border-2 border-white bg-blue-500 text-xs text-blue-50 dark:border-zinc-900"
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.5 }}
+        >
+          {selectedFilePathnames?.length}
+        </motion.div>
+      </div>
     </div>
   );
 };

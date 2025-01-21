@@ -24,9 +24,8 @@ export default function ChatPage() {
     api: "/api/route",
     onError: (err) => console.error("Chat error:", err),
     onFinish: (msg) => console.log("Assistant finished:", msg),
-    initialMessages: [
-      { id: "sys-1", role: "system", content: "You are a helpful assistant." },
-    ],
+    // initialMessages: [{ id: "sys-1", role: "system", content: "" }],
+    initialMessages: [],
   });
 
   // Optionally provide a reload function (stubbed here)
